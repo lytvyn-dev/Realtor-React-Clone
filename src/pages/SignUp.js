@@ -2,9 +2,16 @@
 import GAuth from "../components/GAuth";
 //* icons
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-
+//* firebase
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
+import { serverTimestamp } from "firebase/firestore";
+//* react
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Form, redirect } from "react-router-dom";
+//* react Toastify
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,18 +21,17 @@ function SignUp() {
     email: "",
     password: "",
   });
-  const { inputNameValue } = formData;
-  const { emailValue } = formData;
-  const { passwordValue } = formData;
+  const { name, email, password } = formData;
 
   const showPasswordHandler = () => {
     setShowPassword((prevState) => !prevState);
   };
 
   const changeInputHandler = (e) => {
-    setFormData((prevState) => {
-      return { ...prevState, [e.target.id]: e.target.value };
-    });
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
   };
 
   return (
@@ -40,32 +46,34 @@ function SignUp() {
               alt="keys in hand"
             />
           </div>
-          <form className="md:w-[67%] lg:w-[40%] lg:ml-20" action="#" method="post">
+          <Form method="POST" action="/sign-up" className="md:w-[67%] lg:w-[40%] lg:ml-20">
             <input
               type="text"
               placeholder="Full name"
               className="py-2 px-4 bg-white border-violet-400 border w-full mb-6"
-              id="singUpFullName"
-              name="singUpFullName"
-              value={inputNameValue}
+              id="name"
+              name="name"
+              value={name}
+              onChange={changeInputHandler}
             />
             <input
               className="py-2 px-4 bg-white border-violet-400 border w-full mb-6"
               type="email"
-              name="signUpEmail"
+              name="email"
               placeholder="Email address"
-              id="signUpEmail"
-              value={emailValue}
+              id="email"
+              value={email}
               onChange={changeInputHandler}
             />
             <div className="relative">
               <input
                 className=" py-2 px-4 bg-white border-violet-400 border w-full"
                 type={showPassword ? "text" : "password"}
-                name="singUpPass"
-                id="singUpPass"
+                name="password"
+                id="password"
                 placeholder="Password"
-                value={passwordValue}
+                value={password}
+                autoComplete="on"
                 onChange={changeInputHandler}
               />
               <div onClick={showPasswordHandler} className="text-2xl absolute top-2 right-2">
@@ -92,7 +100,7 @@ function SignUp() {
             </div>
             <div className="text-white font-semibold space-y-4 uppercase">
               <button
-                className="cursor-pointer bg-blue-600 w-full px-7 py-3 hover:bg-blue-700 hover:shadow-xl transition ease-in-out duration-300 active:shadow-xl"
+                className="uppercase cursor-pointer bg-blue-600 w-full px-7 py-3 hover:bg-blue-700 hover:shadow-xl transition ease-in-out duration-300 active:shadow-xl"
                 type="submit"
               >
                 SIGN up
@@ -100,7 +108,7 @@ function SignUp() {
               <span className="form--span">OR</span>
               <GAuth />
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </section>
@@ -108,3 +116,38 @@ function SignUp() {
 }
 
 export default SignUp;
+
+export const action = async ({ request, params }) => {
+  try {
+    const data = await request.formData();
+    const inputsData = {
+      name: data.get("name"),
+      password: data.get("password"),
+      email: data.get("email"),
+    };
+    const { name, password, email } = inputsData;
+
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    updateProfile(auth.currentUser, {
+      displayName: name,
+    });
+    //* send user data to firestore (except password!)!
+    const userData = { name, email };
+    userData.timeStamp = serverTimestamp();
+    await setDoc(doc(db, "users", user.uid), userData);
+    return redirect("/");
+  } catch (error) {
+    toast.error(`${error.message}`, {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
+  return null;
+};

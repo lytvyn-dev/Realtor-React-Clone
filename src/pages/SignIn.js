@@ -13,8 +13,7 @@ function SingIn() {
     email: "",
     password: "",
   });
-  const { emailValue } = formData;
-  const { passwordValue } = formData;
+  const { email, password } = formData;
 
   const showPasswordHandler = () => {
     setShowPassword((prevState) => !prevState);
@@ -42,20 +41,20 @@ function SingIn() {
             <input
               className="py-2 px-4 bg-white border-violet-400 border w-full mb-6"
               type="email"
-              name="signInEmail"
+              name="email"
               placeholder="Email address"
-              id="signInEmail"
-              value={emailValue}
+              id="email"
+              value={email}
               onChange={changeInputHandler}
             />
             <div className="relative">
               <input
                 className=" py-2 px-4 bg-white border-violet-400 border w-full"
                 type={showPassword ? "text" : "password"}
-                name="singInPass"
-                id="singInPass"
+                name="password"
+                id="password"
                 placeholder="Password"
-                value={passwordValue}
+                value={password}
                 onChange={changeInputHandler}
               />
               <div onClick={showPasswordHandler} className="text-2xl absolute top-2 right-2">

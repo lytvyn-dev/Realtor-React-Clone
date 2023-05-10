@@ -8,7 +8,7 @@ function ForgotPassword() {
   const [formData, setFormData] = useState({
     email: "",
   });
-  const { emailValue } = formData;
+  const { email } = formData;
 
   const changeInputHandler = (e) => {
     setFormData((prevState) => {
@@ -32,10 +32,10 @@ function ForgotPassword() {
             <input
               className="py-2 px-4 bg-white border-violet-400 border w-full mb-6"
               type="email"
-              name="signInEmail"
+              name="email"
               placeholder="Email address"
-              id="signInEmail"
-              value={emailValue}
+              id="email"
+              value={email}
               onChange={changeInputHandler}
             />
             <div className="flex flex-col sm:flex-row sm:justify-between whitespace-nowrap text-sm sm:text-lg my-4">
