@@ -1,5 +1,6 @@
 //* pages
 import GAuth from "../components/GAuth";
+//*components
 //* icons
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 //* firebase
