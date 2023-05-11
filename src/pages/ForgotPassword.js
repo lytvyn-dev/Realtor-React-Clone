@@ -81,7 +81,10 @@ export const action = async ({ request }) => {
     const email = data.get("email");
     const auth = getAuth();
     await sendPasswordResetEmail(auth, email);
-    toast.success("Password was send to your email!");
+    toast.success("Password was send to your email!", {
+      autoClose: 3000,
+      position: "bottom-center",
+    });
     return redirect("/sign-in");
   } catch (error) {
     toast.error("Could not send new password!", {

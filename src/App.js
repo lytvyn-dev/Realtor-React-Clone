@@ -8,10 +8,13 @@ import SignUp from "./pages/SignUp";
 import Root from "./pages/Root";
 //* react
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Fragment } from "react";
+import PrivateRoute from "./pages/PrivateRoute";
+//* react Context
+import { AuthContextProvider } from "./store/AuthContext";
 //*actions
 import { action as signUpAction } from "./pages/SignUp";
 import { action as singInAction } from "./pages/SignIn";
+import { action as resetPassword } from "./pages/ForgotPassword";
 //* react toasts
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -29,6 +32,7 @@ function App() {
         {
           path: "forgot-password",
           element: <ForgotPassword />,
+          action: resetPassword,
         },
         {
           path: "offers",
@@ -36,8 +40,15 @@ function App() {
         },
         {
           path: "profile",
-          element: <Profile />,
+          element: <PrivateRoute />,
+          children: [
+            {
+              index: true,
+              element: <Profile />,
+            },
+          ],
         },
+
         {
           path: "sign-in",
           element: <SignIn />,
@@ -53,10 +64,10 @@ function App() {
   ]);
 
   return (
-    <Fragment>
-      <RouterProvider router={router} />;
+    <AuthContextProvider>
+      <RouterProvider router={router} />
       <ToastContainer />
-    </Fragment>
+    </AuthContextProvider>
   );
 }
 
