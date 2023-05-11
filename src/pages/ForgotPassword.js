@@ -1,8 +1,12 @@
 //* pages
 import GAuth from "../components/GAuth";
-
+//* react
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Form, redirect } from "react-router-dom";
+//* firebase auth
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+//* react toasts
+import { toast } from "react-toastify";
 
 function ForgotPassword() {
   const [formData, setFormData] = useState({
@@ -28,7 +32,7 @@ function ForgotPassword() {
               alt="keys in hand"
             />
           </div>
-          <form className="md:w-[67%] lg:w-[40%] lg:ml-20" action="#" method="post">
+          <Form className="md:w-[67%] lg:w-[40%] lg:ml-20" action="/forgot-password" method="POST">
             <input
               className="py-2 px-4 bg-white border-violet-400 border w-full mb-6"
               type="email"
@@ -62,7 +66,7 @@ function ForgotPassword() {
               <span className="form--span">OR</span>
               <GAuth />
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </section>
@@ -70,3 +74,19 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword;
+
+export const action = async ({ request }) => {
+  try {
+    const data = await request.formData();
+    const email = data.get("email");
+    const auth = getAuth();
+    await sendPasswordResetEmail(auth, email);
+    toast.success("Password was send to your email!");
+    return redirect("/sign-in");
+  } catch (error) {
+    toast.error("Could not send new password!", {
+      position: "bottom-center",
+    });
+    return null;
+  }
+};
