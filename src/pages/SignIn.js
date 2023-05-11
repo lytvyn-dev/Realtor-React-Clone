@@ -2,9 +2,14 @@
 import GAuth from "../components/GAuth";
 //* icons
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-
+//*firebase auth
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+//* react
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Form, redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+import { serverTimestamp } from "firebase/firestore";
 
 function SingIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,7 +42,7 @@ function SingIn() {
               alt="keys in hand"
             />
           </div>
-          <form className="md:w-[67%] lg:w-[40%] lg:ml-20" action="#" method="post">
+          <Form action="/sign-in" method="POST" className="md:w-[67%] lg:w-[40%] lg:ml-20">
             <input
               className="py-2 px-4 bg-white border-violet-400 border w-full mb-6"
               type="email"
@@ -54,6 +59,7 @@ function SingIn() {
                 name="password"
                 id="password"
                 placeholder="Password"
+                autoComplete="on"
                 value={password}
                 onChange={changeInputHandler}
               />
@@ -89,7 +95,7 @@ function SingIn() {
               <span className="form--span">OR</span>
               <GAuth />
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </section>
@@ -97,3 +103,29 @@ function SingIn() {
 }
 
 export default SingIn;
+
+export const action = async ({ request, params }) => {
+  const auth = getAuth();
+  try {
+    const data = await request.formData();
+    const userData = {
+      email: data.get("email"),
+      password: data.get("password"),
+      timeStamp: serverTimestamp(),
+    };
+
+    const { email, password } = userData;
+
+    const userCredintials = await signInWithEmailAndPassword(auth, email, password);
+    console.log(userCredintials.user);
+    // Signed in
+    // const user = userCredential.user;
+    return redirect("/");
+    // ...
+  } catch (error) {
+    toast.error(`${error.message}`, {
+      position: "bottom-center",
+    });
+    return null;
+  }
+};

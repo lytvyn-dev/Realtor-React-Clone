@@ -11,6 +11,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Fragment } from "react";
 //*actions
 import { action as signUpAction } from "./pages/SignUp";
+import { action as singInAction } from "./pages/SignIn";
 //* react toasts
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -40,6 +41,7 @@ function App() {
         {
           path: "sign-in",
           element: <SignIn />,
+          action: singInAction,
         },
         {
           path: "sign-up",

@@ -4,9 +4,9 @@ import GAuth from "../components/GAuth";
 //* icons
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 //* firebase
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import { serverTimestamp } from "firebase/firestore";
 //* react
 import { useState } from "react";
@@ -119,6 +119,7 @@ function SignUp() {
 export default SignUp;
 
 export const action = async ({ request, params }) => {
+  const auth = getAuth();
   try {
     const data = await request.formData();
     const inputsData = {
@@ -134,21 +135,14 @@ export const action = async ({ request, params }) => {
       displayName: name,
     });
     //* send user data to firestore (except password!)!
-    const userData = { name, email };
-    userData.timeStamp = serverTimestamp();
+    const userData = { name, email, timeStamp: serverTimestamp() };
+    console.log(userData);
     await setDoc(doc(db, "users", user.uid), userData);
     return redirect("/");
   } catch (error) {
     toast.error(`${error.message}`, {
       position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: false,
-      progress: undefined,
-      theme: "dark",
     });
+    return null;
   }
-  return null;
 };
