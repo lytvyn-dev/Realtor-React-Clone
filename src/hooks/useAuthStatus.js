@@ -14,6 +14,4 @@ export function useAuthStatus() {
       ctx.checkAuthHandler();
     });
   }, [ctx]);
-
-  // return { loggedIn: ctx.isLoggedIn, checkingStatus: ctx.checkAuth };
 }

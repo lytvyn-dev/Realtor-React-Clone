@@ -18,6 +18,7 @@ import { action as resetPassword } from "./pages/ForgotPassword";
 //* react toasts
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import CreateListing from "./pages/CreateListing";
 
 function App() {
   const router = createBrowserRouter([
@@ -37,6 +38,10 @@ function App() {
         {
           path: "offers",
           element: <Offers />,
+        },
+        {
+          path: "create-listing",
+          element: <CreateListing />,
         },
         {
           path: "profile",

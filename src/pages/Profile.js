@@ -6,6 +6,9 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 //* react toasts
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+//* icons
+import { FcHome } from "react-icons/fc";
 
 function Profile() {
   const [changed, setChanged] = useState(false);
@@ -77,7 +80,7 @@ function Profile() {
           disabled
           value={formData.email}
         />
-        <div className="flex text-sm sm:text-lg items-start md:flex-row justify-between whitespace-nowrap">
+        <div className="flex mb-6 text-sm sm:text-lg items-start md:flex-row justify-between whitespace-nowrap">
           <p>
             Do you want to change your name?
             <button
@@ -99,6 +102,13 @@ function Profile() {
             Sign out
           </button>
         </div>
+        <Link
+          to="/create-listing"
+          className="flex items-center justify-center text-lg gap-5 uppercase text-white cursor-pointer bg-blue-600 w-full px-7 py-3 hover:bg-blue-700 hover:shadow-xl transition ease-in-out duration-300 active:shadow-xl rounded"
+        >
+          <FcHome className="pointer-events-none bg-rose-200 w-7 h-7 flex justify-center items-center rounded-full p-1" />
+          sell or rent your home
+        </Link>
       </form>
     </Fragment>
   );
