@@ -1,5 +1,4 @@
 import { Fragment, useState, useContext } from "react";
-import { Form, useNavigate } from "react-router-dom";
 import AuthContext from "../store/AuthContext";
 //* firebase auth
 import { getAuth, updateProfile } from "firebase/auth";
@@ -10,8 +9,7 @@ import { toast } from "react-toastify";
 
 function Profile() {
   const [changed, setChanged] = useState(false);
-  const navigate = useNavigate();
-  const ctx = useContext(AuthContext);
+  const { logOutHandler } = useContext(AuthContext);
 
   const auth = getAuth();
   const { displayName, email, uid } = auth.currentUser;
@@ -53,17 +51,16 @@ function Profile() {
   };
 
   const logOutClickHandler = () => {
-    const success = ctx.logOutHandler();
-    if (success) navigate("/sign-in");
+    logOutHandler();
   };
 
   return (
     <Fragment>
       <h1 className="mb-7 text-center text-3xl w-full mt-6 font-bold">My Profile</h1>
-      <Form className="w-full px-3 md:w-[60%] m-auto">
+      <form className="w-full px-3 md:w-[60%] m-auto">
         <input
           className={`py-2 px-4 bg-white border-violet-400 border w-full mb-6 ${
-            changed && "bg-red-200"
+            changed && "bg-red-300"
           }`}
           type="text"
           name="name"
@@ -84,6 +81,7 @@ function Profile() {
           <p>
             Do you want to change your name?
             <button
+              type="button"
               onClick={() => {
                 changed && SubmitFormHandler();
                 setChanged((prevState) => !prevState);
@@ -94,13 +92,14 @@ function Profile() {
             </button>
           </p>
           <button
+            type="button"
             onClick={logOutClickHandler}
             className=" text-blue-500 cursor-pointer hover:text-blue-700 transition-colors"
           >
             Sign out
           </button>
         </div>
-      </Form>
+      </form>
     </Fragment>
   );
 }

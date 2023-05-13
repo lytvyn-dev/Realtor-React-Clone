@@ -22,7 +22,8 @@ export const AuthContextProvider = (props) => {
   const logOutHandler = async () => {
     try {
       const auth = getAuth();
-      return await signOut(auth);
+      await signOut(auth);
+      setIsLoggedIn(false);
     } catch (error) {
       throw new Error("Something were wrong!");
     }

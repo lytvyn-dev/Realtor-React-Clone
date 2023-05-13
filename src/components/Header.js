@@ -1,34 +1,13 @@
-import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import AuthContext from "../store/AuthContext";
+import { useContext } from "react";
+import { useAuthStatus } from "../hooks/useAuthStatus";
 
 function Header() {
+  const { isLoggedIn } = useContext(AuthContext);
   const navigation = useNavigate();
-  const ctx = useContext(AuthContext);
 
-  const navLink = ctx.isLoggedIn ? (
-    <NavLink
-      className={({ isActive }) =>
-        isActive
-          ? "text-black border-red-400 border-b-[3px] inline-block py-3"
-          : "text-gray-500 border-transparent border-b-[3px] inline-block py-3"
-      }
-      to="profile"
-    >
-      Profile
-    </NavLink>
-  ) : (
-    <NavLink
-      className={({ isActive }) =>
-        isActive
-          ? "text-black border-red-400 border-b-[3px] inline-block py-3"
-          : "text-gray-500 border-transparent border-b-[3px] inline-block py-3"
-      }
-      to="sign-in"
-    >
-      Sing In
-    </NavLink>
-  );
+  useAuthStatus();
 
   return (
     <header className=" bg-white border-b-2">
@@ -64,7 +43,18 @@ function Header() {
               Offer
             </NavLink>
           </li>
-          <li>{navLink}</li>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                isActive
+                  ? "text-black border-red-400 border-b-[3px] inline-block py-3"
+                  : "text-gray-500 border-transparent border-b-[3px] inline-block py-3"
+              }
+              to={isLoggedIn ? "profile" : "sign-in"}
+            >
+              {isLoggedIn ? "Profile" : "Sign in"}
+            </NavLink>
+          </li>
         </ul>
       </div>
     </header>

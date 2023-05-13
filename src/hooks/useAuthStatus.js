@@ -15,5 +15,5 @@ export function useAuthStatus() {
     });
   }, [ctx]);
 
-  return { loggedIn: ctx.isLoggedIn, checkingStatus: ctx.checkAuth };
+  // return { loggedIn: ctx.isLoggedIn, checkingStatus: ctx.checkAuth };
 }
