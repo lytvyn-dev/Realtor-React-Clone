@@ -18,6 +18,7 @@ export const AuthContextProvider = (props) => {
   const logInHandler = () => {
     setIsLoggedIn(true);
   };
+
   const logOutHandler = async () => {
     try {
       const auth = getAuth();

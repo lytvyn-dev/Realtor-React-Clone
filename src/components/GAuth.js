@@ -18,11 +18,7 @@ function GAuth() {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      // const credential = GoogleAuthProvider.credentialFromResult(result);
-      // const token = credential.accessToken;
-      // The signed-in user info.
       const user = result.user;
-      // IdP data available using getAdditionalUserInfo(result)
 
       //? read data from our database and check if user exist
       const docRef = doc(db, "users", user.uid);
@@ -35,12 +31,8 @@ function GAuth() {
           email: user.email,
           timeStamp: serverTimestamp(),
         });
-        navigate("/");
-      } else {
-        toast.error("User already exist!", {
-          position: "bottom-center",
-        });
       }
+      navigate("/");
     } catch (error) {
       toast.error(`${error.message}`);
     }
