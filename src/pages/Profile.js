@@ -62,8 +62,8 @@ function Profile() {
       <h1 className="mb-7 text-center text-3xl w-full mt-6 font-bold">My Profile</h1>
       <form className="w-full px-3 md:w-[60%] m-auto">
         <input
-          className={`py-2 px-4 bg-white border-violet-400 border w-full mb-6 ${
-            changed && "bg-red-300"
+          className={`py-2 px-4 bg-white border-violet-400 border border-solid w-full mb-6 ${
+            changed && "bg-pink-300 border-black focus:border-black"
           }`}
           type="text"
           name="name"

@@ -41,8 +41,15 @@ function App() {
         },
         {
           path: "create-listing",
-          element: <CreateListing />,
+          element: <PrivateRoute />,
+          children: [
+            {
+              index: true,
+              element: <CreateListing />,
+            },
+          ],
         },
+
         {
           path: "profile",
           element: <PrivateRoute />,
