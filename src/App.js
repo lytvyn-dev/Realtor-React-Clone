@@ -1,4 +1,5 @@
 //* pages
+import ListingDetails from "./pages/ListingDetails";
 import HomePage from "./pages/HomePage";
 import ForgotPassword from "./pages/ForgotPassword";
 import Offers from "./pages/Offers";
@@ -49,7 +50,7 @@ function App() {
             },
           ],
         },
-
+        { path: "category/:categoryName/:listingId", element: <ListingDetails /> },
         {
           path: "profile",
           element: <PrivateRoute />,

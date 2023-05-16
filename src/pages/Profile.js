@@ -1,20 +1,39 @@
-import { Fragment, useState, useContext } from "react";
+import { Fragment, useState, useContext, useEffect } from "react";
 import AuthContext from "../store/AuthContext";
 //* firebase auth
 import { getAuth, updateProfile } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 //* react toasts
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 //* icons
 import { FcHome } from "react-icons/fc";
+//* components
+import ListingsList from "../components/ListingsList";
 
 function Profile() {
   const [changed, setChanged] = useState(false);
+  const [listings, setListings] = useState([]);
   const { logOutHandler } = useContext(AuthContext);
-
   const auth = getAuth();
+
+  useEffect(() => {
+    const fetchUserListings = async () => {
+      const q = query(collection(db, "listings"), where("userRef", "==", auth.currentUser.uid));
+      const querySnapshot = await getDocs(q);
+      let listings = [];
+      querySnapshot.forEach((doc) => {
+        listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+      setListings(listings);
+    };
+    fetchUserListings();
+  }, [auth.currentUser.uid]);
+
   const { displayName, email, uid } = auth.currentUser;
   const [formData, setFormData] = useState({
     name: displayName,
@@ -59,57 +78,63 @@ function Profile() {
 
   return (
     <Fragment>
-      <h1 className="mb-7 text-center text-3xl w-full mt-6 font-bold">My Profile</h1>
-      <form className="w-full px-3 md:w-[60%] m-auto">
-        <input
-          className={`py-2 px-4 bg-white border-violet-400 border border-solid w-full mb-6 ${
-            changed && "bg-pink-300 border-black focus:border-black"
-          }`}
-          type="text"
-          name="name"
-          id="name"
-          value={formData.name}
-          disabled={!changed}
-          onChange={inputChangeHandler}
-        />
-        <input
-          className="py-2 px-4 bg-white border-violet-400 border w-full mb-6"
-          type="email"
-          name="email"
-          id="email"
-          disabled
-          value={formData.email}
-        />
-        <div className="flex mb-6 text-sm sm:text-lg items-start md:flex-row justify-between whitespace-nowrap">
-          <p>
-            Do you want to change your name?
+      <div>
+        <h1 className="mb-7 text-center text-3xl w-full mt-6 font-bold">My Profile</h1>
+        <form className="w-full px-3 md:w-[40%] m-auto">
+          <input
+            className={`py-2 px-4 bg-white border-violet-400 border border-solid w-full mb-6 ${
+              changed && "bg-red-400 border-black focus:border-black"
+            }`}
+            type="text"
+            name="name"
+            id="name"
+            value={formData.name}
+            disabled={!changed}
+            onChange={inputChangeHandler}
+          />
+          <input
+            className="py-2 px-4 bg-white border-violet-400 border w-full mb-6"
+            type="email"
+            name="email"
+            id="email"
+            disabled
+            value={formData.email}
+          />
+          <div className="flex mb-6 text-sm sm:text-lg items-start md:flex-row justify-between whitespace-nowrap">
+            <p>
+              Do you want to change your name?
+              <button
+                type="button"
+                onClick={() => {
+                  changed && SubmitFormHandler();
+                  setChanged((prevState) => !prevState);
+                }}
+                className=" cursor-pointer ml-1 text-red-400 hover:text-red-700 transition-colors"
+              >
+                {changed ? "Apply Edit" : "Edit"}
+              </button>
+            </p>
             <button
               type="button"
-              onClick={() => {
-                changed && SubmitFormHandler();
-                setChanged((prevState) => !prevState);
-              }}
-              className=" cursor-pointer ml-1 text-red-400 hover:text-red-700 transition-colors"
+              onClick={logOutClickHandler}
+              className=" text-blue-500 cursor-pointer hover:text-blue-700 transition-colors"
             >
-              {changed ? "Apply Edit" : "Edit"}
+              Sign out
             </button>
-          </p>
-          <button
-            type="button"
-            onClick={logOutClickHandler}
-            className=" text-blue-500 cursor-pointer hover:text-blue-700 transition-colors"
+          </div>
+          <Link
+            to="/create-listing"
+            className="flex items-center justify-center text-lg gap-5 uppercase text-white cursor-pointer bg-blue-600 w-full px-7 py-3 hover:bg-blue-700 hover:shadow-xl transition ease-in-out duration-300 active:shadow-xl rounded"
           >
-            Sign out
-          </button>
-        </div>
-        <Link
-          to="/create-listing"
-          className="flex items-center justify-center text-lg gap-5 uppercase text-white cursor-pointer bg-blue-600 w-full px-7 py-3 hover:bg-blue-700 hover:shadow-xl transition ease-in-out duration-300 active:shadow-xl rounded"
-        >
-          <FcHome className="pointer-events-none bg-rose-200 w-7 h-7 flex justify-center items-center rounded-full p-1" />
-          sell or rent your home
-        </Link>
-      </form>
+            <FcHome className="pointer-events-none bg-rose-200 w-7 h-7 flex justify-center items-center rounded-full p-1" />
+            sell or rent your home
+          </Link>
+        </form>
+      </div>
+      <div className="mt-10">
+        <h3 className="text-center text-lg font-semibold mb-8">My Listings</h3>
+        <ListingsList data={listings} />
+      </div>
     </Fragment>
   );
 }
