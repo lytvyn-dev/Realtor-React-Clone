@@ -2,11 +2,11 @@ import { Fragment, useState, useContext, useEffect } from "react";
 import AuthContext from "../store/AuthContext";
 //* firebase auth
 import { getAuth, updateProfile } from "firebase/auth";
-import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 //* react toasts
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //* icons
 import { FcHome } from "react-icons/fc";
 //* components
@@ -17,6 +17,7 @@ function Profile() {
   const [listings, setListings] = useState([]);
   const { logOutHandler } = useContext(AuthContext);
   const auth = getAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserListings = async () => {
@@ -76,6 +77,19 @@ function Profile() {
     logOutHandler();
   };
 
+  const onDeleteListing = async (id) => {
+    if (window.confirm("Are you sure you want to delete the listing?")) {
+      await deleteDoc(doc(db, "listings", id));
+      const uploadedListings = listings.filter((listing) => listing.id !== id);
+      setListings(uploadedListings);
+      toast.success("Listing deleted!", { position: "bottom-center" });
+    }
+  };
+
+  const onEditListing = (id) => {
+    navigate(`/edit-listing/${id}`);
+  };
+
   return (
     <Fragment>
       <div>
@@ -133,7 +147,7 @@ function Profile() {
       </div>
       <div className="mt-10">
         <h3 className="text-center text-lg font-semibold mb-8">My Listings</h3>
-        <ListingsList data={listings} />
+        <ListingsList onDelete={onDeleteListing} onEdit={onEditListing} data={listings} />
       </div>
     </Fragment>
   );

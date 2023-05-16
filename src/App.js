@@ -1,5 +1,7 @@
 //* pages
 import ListingDetails from "./pages/ListingDetails";
+import CreateListing from "./pages/CreateListing";
+import EditListing from "./pages/EditListing";
 import HomePage from "./pages/HomePage";
 import ForgotPassword from "./pages/ForgotPassword";
 import Offers from "./pages/Offers";
@@ -19,7 +21,6 @@ import { action as resetPassword } from "./pages/ForgotPassword";
 //* react toasts
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import CreateListing from "./pages/CreateListing";
 
 function App() {
   const router = createBrowserRouter([
@@ -51,6 +52,7 @@ function App() {
           ],
         },
         { path: "category/:categoryName/:listingId", element: <ListingDetails /> },
+        { path: "edit-listing/:listingId", element: <EditListing /> },
         {
           path: "profile",
           element: <PrivateRoute />,

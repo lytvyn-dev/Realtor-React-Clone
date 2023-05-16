@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 //* react moment
 import Moment from "react-moment";
 
-function Listing({ id, data }) {
+function Listing({ id, data, onDelete = undefined, onEdit = undefined }) {
   return (
     <li className="flex flex-col justify-between transition-shadow duration-300 list-none bg-white shadow-md hover:shadow-lg overflow-hidden rounded">
       <Link to={`/category/${data.type}/${id}`} className="overflow-hidden relative">
@@ -38,10 +38,13 @@ function Listing({ id, data }) {
           <div className="font-bold text-xs">
             {data.beds} Beds {data.baths} Baths
           </div>
-          <div className="flex gap-2">
-            <MdModeEditOutline className="cursor-pointer" />
-            <FaTrash className="cursor-pointer fill-red-600" />
-          </div>
+
+          {onDelete && (
+            <div className="flex gap-2">
+              <MdModeEditOutline className="cursor-pointer" onClick={() => onEdit(id)} />
+              <FaTrash className="cursor-pointer fill-red-600" onClick={() => onDelete(id)} />
+            </div>
+          )}
         </div>
       </div>
     </li>
