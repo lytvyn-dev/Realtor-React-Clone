@@ -13,17 +13,17 @@ import { FcHome } from "react-icons/fc";
 import ListingsList from "../components/ListingsList";
 
 function Profile() {
-  const [changed, setChanged] = useState(false);
-  const [listings, setListings] = useState([]);
-  const { logOutHandler } = useContext(AuthContext);
   const auth = getAuth();
   const navigate = useNavigate();
+  const [listings, setListings] = useState([]);
+  const { logOutHandler } = useContext(AuthContext);
+  const [changed, setChanged] = useState(false);
 
   useEffect(() => {
-    const fetchUserListings = async () => {
+    const fetchLisitngs = async () => {
+      let listings = [];
       const q = query(collection(db, "listings"), where("userRef", "==", auth.currentUser.uid));
       const querySnapshot = await getDocs(q);
-      let listings = [];
       querySnapshot.forEach((doc) => {
         listings.push({
           id: doc.id,
@@ -32,7 +32,7 @@ function Profile() {
       });
       setListings(listings);
     };
-    fetchUserListings();
+    fetchLisitngs();
   }, [auth.currentUser.uid]);
 
   const { displayName, email, uid } = auth.currentUser;

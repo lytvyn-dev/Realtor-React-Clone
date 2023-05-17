@@ -52,7 +52,17 @@ function App() {
           ],
         },
         { path: "category/:categoryName/:listingId", element: <ListingDetails /> },
-        { path: "edit-listing/:listingId", element: <EditListing /> },
+
+        {
+          path: "edit-listing/:listingId",
+          element: <PrivateRoute />,
+          children: [
+            {
+              index: true,
+              element: <EditListing />,
+            },
+          ],
+        },
         {
           path: "profile",
           element: <PrivateRoute />,
