@@ -401,7 +401,7 @@ function CreateListing() {
                 max="400000"
                 required
               />
-              <p className="font-medium">$ / Month</p>
+              {formData.type === "rent" && <p className="font-medium">$ / Month</p>}
             </div>
           </div>
           {offer && (
@@ -417,11 +417,11 @@ function CreateListing() {
                   name="discount"
                   id="discount"
                   value={discount}
-                  min="0"
+                  min="49"
                   max="10000"
                   required
                 />
-                <p className="font-medium">$ / Month</p>
+                {formData.type === "rent" && <p className="font-medium">$ / Month</p>}
               </div>
             </div>
           )}

@@ -31,7 +31,10 @@ function Listing({ id, data, onDelete = undefined, onEdit = undefined }) {
         </p>
         <p className="text-xl text-blue-700 font-semibold truncate">{data.description}</p>
         <p className="text-green-700 font-semibold text-lg">
-          ${data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          $
+          {data.offer
+            ? data.discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            : data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           {data.type === "rent" && " / Month"}
         </p>
         <div className="flex justify-between">
