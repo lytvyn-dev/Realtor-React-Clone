@@ -40,7 +40,7 @@ function Header() {
               }
               to="offers"
             >
-              Offer
+              Offers
             </NavLink>
           </li>
           <li>

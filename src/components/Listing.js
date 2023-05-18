@@ -9,7 +9,7 @@ import Moment from "react-moment";
 function Listing({ id, data, onDelete = undefined, onEdit = undefined }) {
   return (
     <li className="flex flex-col justify-between transition-shadow duration-300 list-none bg-white shadow-md hover:shadow-lg overflow-hidden rounded">
-      <Link to={`/category/${data.type}/${id}`} className="overflow-hidden relative">
+      <Link to={`/category/${data?.type}/${id}`} className="overflow-hidden relative">
         <img
           loading="lazy"
           className="h-[170px] object-cover hover:scale-110 transition-transform duration-300"

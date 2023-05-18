@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 //*firebase
 import { getAuth } from "firebase/auth";
+import { getDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection, serverTimestamp, updateDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -36,14 +37,24 @@ function Form(props) {
     longitude: "",
   });
 
-  //* it will rerender only we pass listing data throw props
   useEffect(() => {
-    setLoading(true);
-    if (props.data) {
-      setFormData({ ...props.data });
-    }
-    setTimeout(() => setLoading(false), 1000);
-  }, [props.data]);
+    const fetchListings = async () => {
+      try {
+        if (props.type === "edit") {
+          setLoading(true);
+          const docRef = doc(db, "listings", props.listingId);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setFormData(docSnap.data());
+          }
+        }
+      } catch (error) {
+        toast.error("Error while fetching data!", { position: "bottom-center" });
+      }
+      setLoading(false);
+    };
+    fetchListings();
+  }, []);
 
   const {
     type,
@@ -134,7 +145,7 @@ function Form(props) {
     const imgUrls = await Promise.all([...images].map((image) => storeImage(image))).catch(
       (error) => {
         setLoading(false);
-        toast.error("Images not uploaded");
+        toast.error("Images not uploaded", { position: "bottom-center" });
         return;
       }
     );
