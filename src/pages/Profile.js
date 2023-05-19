@@ -2,7 +2,7 @@ import { Fragment, useState, useContext, useEffect } from "react";
 import AuthContext from "../store/AuthContext";
 //* firebase auth
 import { getAuth, updateProfile } from "firebase/auth";
-import { doc, updateDoc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 //* react toasts
 import { toast } from "react-toastify";
@@ -11,6 +11,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcHome } from "react-icons/fc";
 //* components
 import ListingsList from "../components/ListingsList";
+//* utils
+import { fetchListingsList } from "../utils/fetchListingsList";
 
 function Profile() {
   const auth = getAuth();
@@ -20,19 +22,12 @@ function Profile() {
   const [changed, setChanged] = useState(false);
 
   useEffect(() => {
-    const fetchLisitngs = async () => {
-      let listings = [];
-      const q = query(collection(db, "listings"), where("userRef", "==", auth.currentUser.uid));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        listings.push({
-          id: doc.id,
-          data: doc.data(),
-        });
-      });
-      setListings(listings);
+    const fetchListings = async () => {
+      const condition = "userRef";
+      const data = await fetchListingsList(db, condition, auth.currentUser.uid);
+      setListings(data);
     };
-    fetchLisitngs();
+    fetchListings();
   }, [auth.currentUser.uid]);
 
   const { displayName, email, uid } = auth.currentUser;
