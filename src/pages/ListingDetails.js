@@ -6,7 +6,7 @@ import { FaChair } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 //* components
-import SubmitButton from "../components/UI/btns/SubmitButton";
+import LandLord from "../components/LandLord";
 import Spinner from "../components/Spinner";
 //* utils
 import { fetchListingById } from "../utils/fetchListingById";
@@ -40,7 +40,7 @@ function ListingDetails() {
 
   if (loading) return <Spinner />;
   return (
-    <section className="h-screen flex flex-col h- gap-5 mb-32">
+    <section className="h-screen flex flex-col gap-5 mb-32">
       <Splide options={options} hasTrack={false} className="relative">
         <div style={{ position: "relative" }}>
           <SplideTrack>
@@ -65,7 +65,7 @@ function ListingDetails() {
 
       <div
         className="bg-white shadow-lg h-[445
-				px] container mx-auto flex gap-4 pt-10 pb-5 px-3"
+				px] container  mx-auto flex flex-col md:flex-row gap-4 pt-10 pb-5 px-3"
       >
         <div className="basis-1/2 flex flex-col gap-4">
           <p className="text-2xl font-bold text-blue-900">{listing?.name}</p>
@@ -73,10 +73,10 @@ function ListingDetails() {
             <MdLocationOn /> {listing?.address}
           </address>
           <div className="flex gap-3">
-            <div className="text-white  font-bold bg-red-700 rounded py-1 w-[160px] text-center">
+            <div className="flex items-center  justify-center text-sm md:text-base  text-white  font-bold bg-red-700 rounded py-1 w-[160px] text-center">
               For <span className="capitalize">{listing?.type}</span>
             </div>
-            <div className="text-white  font-bold bg-green-700 rounded py-1 w-[160px] text-center">
+            <div className="flex items-center  justify-center text-white text-sm md:text-base  font-bold bg-green-700 rounded py-1 w-[160px] text-center">
               {listing?.offer
                 ? `$${(listing?.price - listing.discount)
                     .toString()
@@ -87,7 +87,7 @@ function ListingDetails() {
           <p>
             <span className="font-bold">Description</span> - {listing?.description}
           </p>
-          <div className="flex items-center space-x-14 text-sm font-bold">
+          <div className="flex items-center gap-2 sm:gap-12 text-sm font-bold">
             <div className="flex items-center gap-1">
               <MdKingBed /> {} Beds
             </div>
@@ -110,22 +110,11 @@ function ListingDetails() {
               Contact landlord
             </button>
           )}
-          {showForm && (
-            <form action="#" className="flex flex-col gap-4">
-              <p>Contact name for the {listing?.email}</p>
-              <textarea
-                className="placeholder:text-gray-500 rounded px-4 py-2 border border-gray-300 w-full"
-                name="message"
-                id="message"
-                cols="100%"
-                rows="2"
-                placeholder="Message"
-              ></textarea>
-              <SubmitButton value="Send message" />
-            </form>
-          )}
+          {showForm && <LandLord userRef={listing.userRef} listingTitle={listing.description} />}
         </div>
-        <div className="basis-1/2 bg-gray-300"></div>
+        <div className="basis-1/2bg-gray-30">
+          <p>Text</p>
+        </div>
       </div>
     </section>
   );

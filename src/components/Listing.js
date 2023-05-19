@@ -12,7 +12,7 @@ function Listing({ id, data, onDelete = undefined, onEdit = undefined }) {
       <Link to={`/category/${data?.type}/${id}`} className="overflow-hidden relative">
         <img
           loading="lazy"
-          className="h-[170px] object-cover hover:scale-110 transition-transform duration-300"
+          className="h-[170px] w-full object-cover hover:scale-110 transition-transform duration-300"
           src={data.imgUrls}
           alt={data.description}
         />
