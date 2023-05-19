@@ -13,12 +13,15 @@ import { fetchListingById } from "../utils/fetchListingById";
 //* splide slider
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css/skyblue";
+//* firebase auth
+import { getAuth } from "firebase/auth";
 
 function ListingDetails() {
   const { listingId } = useParams();
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState();
   const [listing, setListing] = useState();
+  const auth = getAuth();
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -101,15 +104,23 @@ function ListingDetails() {
               <FaChair /> {listing?.furnished ? "Furnished" : "Not furnished"}
             </div>
           </div>
-          {!showForm && (
+          {auth.currentUser?.uid !== listing?.userRef && !showForm && (
             <button
               type="button"
-              onClick={() => setShowForm(true)}
+              onClick={() => {
+                if (auth.currentUser.uid !== listing.userRef) {
+                  setShowForm(true);
+                }
+              }}
               className="uppercase w-full bg-blue-600 text-white py-3 font-semibold hover:bg-blue-700 hover:shadow-xl transition ease-in-out duration-300 shadow-xl"
             >
               Contact landlord
             </button>
           )}
+          {/* {!showForm && (
+ 
+          )} */}
+
           {showForm && <LandLord userRef={listing.userRef} listingTitle={listing.description} />}
         </div>
         <div className="basis-1/2bg-gray-30">
