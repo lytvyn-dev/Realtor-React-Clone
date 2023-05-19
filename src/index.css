@@ -34,6 +34,14 @@ body {
   background-color: black;
 }
 
+.splide__arrow svg {
+  fill: #ccc !important;
+}
+
+.splide__pagination {
+  display: none !important;
+}
+
 /* .nav--link-active {
   @apply text-black border-red-400;
 }

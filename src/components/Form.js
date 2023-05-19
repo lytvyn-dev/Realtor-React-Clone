@@ -8,10 +8,11 @@ import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 //*firebase
 import { getAuth } from "firebase/auth";
-import { getDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection, serverTimestamp, updateDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
+//* utils
+import { fetchListingById } from "../utils/fetchListingById";
 //* uuid
 import { v4 as uuidv4 } from "uuid";
 import ButtonChecked from "./UI/btns/ButtonChecked";
@@ -38,23 +39,13 @@ function Form(props) {
   });
 
   useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        if (props.type === "edit") {
-          setLoading(true);
-          const docRef = doc(db, "listings", props.listingId);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            setFormData(docSnap.data());
-          }
-        }
-      } catch (error) {
-        toast.error("Error while fetching data!", { position: "bottom-center" });
-      }
+    const fetchListing = async () => {
+      setLoading(true);
+      setFormData(await fetchListingById(props.listingId));
       setLoading(false);
     };
-    fetchListings();
-  }, []);
+    fetchListing();
+  }, [props.listingId, props.type]);
 
   const {
     type,
@@ -433,7 +424,6 @@ function Form(props) {
               type="file"
               name="images"
               id="images"
-              max="6"
               accept=".jpg,.png,.jpeg"
               required
               multiple
