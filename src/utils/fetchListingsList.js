@@ -1,7 +1,8 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { db } from "../firebase";
 
-export const fetchListingsList = async (db, conditionOne, conditionTwo) => {
+export const fetchListingsList = async (conditionOne, conditionTwo) => {
   let listings = [];
   try {
     const q = query(collection(db, "listings"), where(conditionOne, "==", conditionTwo));
@@ -14,6 +15,6 @@ export const fetchListingsList = async (db, conditionOne, conditionTwo) => {
     });
     return listings;
   } catch (error) {
-    toast.error("Could not fetch you listings! 👀");
+    toast.error("Could not fetch you listings! 👀", { position: "bottom-center" });
   }
 };

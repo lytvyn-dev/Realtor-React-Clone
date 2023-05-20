@@ -4,7 +4,7 @@ import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
 import HomePage from "./pages/HomePage";
 import ForgotPassword from "./pages/ForgotPassword";
-import Offers from "./pages/Offers";
+import ListingDynamic from "./pages/ListingDynamic";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -38,8 +38,8 @@ function App() {
           action: resetPassword,
         },
         {
-          path: "offers",
-          element: <Offers />,
+          path: "category/:listingType",
+          element: <ListingDynamic />,
         },
         {
           path: "create-listing",
