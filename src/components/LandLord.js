@@ -1,6 +1,5 @@
 //* firestore
 import { doc, getDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import { db } from "../firebase";
 //* react
 import { useEffect, useState } from "react";

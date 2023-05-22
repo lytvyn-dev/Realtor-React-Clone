@@ -8,9 +8,6 @@ import Spinner from "../components/Spinner";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-//* firestore
-import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase";
 //* react toasts notification
 import { toast } from "react-toastify";
 //* utils
@@ -44,8 +41,6 @@ function HomePage() {
     }
     fetchListings();
   }, []);
-
-  console.log(listings);
 
   const options = {
     type: "loop",

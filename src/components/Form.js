@@ -39,12 +39,14 @@ function Form(props) {
   });
 
   useEffect(() => {
-    const fetchListing = async () => {
-      setLoading(true);
-      setFormData(await fetchListingById(props.listingId));
-      setLoading(false);
-    };
-    fetchListing();
+    if (props.type === "edit") {
+      const fetchListing = async () => {
+        setLoading(true);
+        setFormData(await fetchListingById(props.listingId));
+        setLoading(false);
+      };
+      fetchListing();
+    }
   }, [props.listingId, props.type]);
 
   const {
@@ -317,9 +319,7 @@ function Form(props) {
                 value={latitude}
                 onChange={changeFormDataHandler}
                 required
-                min="-90"
-                max="90"
-                type="number"
+                type="text"
                 className="placeholder:text-gray-500 text-center rounded px-4 py-3 border border-gray-300 focus:border-gray-700"
               />
             </div>
@@ -333,9 +333,7 @@ function Form(props) {
                 onChange={changeFormDataHandler}
                 value={longitude}
                 required
-                type="number"
-                min="-180"
-                max="180"
+                type="text"
                 className="placeholder:text-gray-500 text-center rounded px-4 py-3 border border-gray-300 focus:border-gray-700"
               />
             </div>

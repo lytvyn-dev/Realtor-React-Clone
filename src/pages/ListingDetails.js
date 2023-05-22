@@ -15,6 +15,8 @@ import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css/skyblue";
 //* firebase auth
 import { getAuth } from "firebase/auth";
+// *map
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 function ListingDetails() {
   const { listingId } = useParams();
@@ -41,9 +43,14 @@ function ListingDetails() {
     height: "19rem",
   };
 
+  const position = {
+    latitude: listing?.latitude || 0,
+    longitude: listing?.longitude || 0,
+  };
+
   if (loading) return <Spinner />;
   return (
-    <section className="h-screen flex flex-col gap-5 mb-32">
+    <section className=" flex flex-col gap-5 lg:mb-32">
       <Splide options={options} hasTrack={false} className="relative">
         <div style={{ position: "relative" }}>
           <SplideTrack>
@@ -71,7 +78,12 @@ function ListingDetails() {
 				px] container  mx-auto flex flex-col md:flex-row gap-4 pt-10 pb-5 px-3"
       >
         <div className="basis-1/2 flex flex-col gap-4">
-          <p className="text-2xl font-bold text-blue-900">{listing?.name}</p>
+          <p className="text-2xl font-bold text-blue-900">
+            {listing?.name} - $
+            {listing?.offer
+              ? listing?.discount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              : listing?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
           <address className="flex items-center gap-1 not-italic font-medium">
             <MdLocationOn /> {listing?.address}
           </address>
@@ -84,18 +96,18 @@ function ListingDetails() {
                 ? `$${(listing?.price - listing.discount)
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} discount`
-                : listing?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                : `$${listing?.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
             </div>
           </div>
           <p>
             <span className="font-bold">Description</span> - {listing?.description}
           </p>
-          <div className="flex items-center gap-2 sm:gap-12 text-sm font-bold">
+          <div className="flex items-center gap-2 sm:gap-10 md:gap-4 lg:gap-8 text-xs sm:text-sm font-bold">
             <div className="flex items-center gap-1">
-              <MdKingBed /> {} Beds
+              <MdKingBed /> {listing?.beds < 1 ? `${listing.beds} Beds` : "1 Bed"}
             </div>
             <div className="flex items-center gap-1">
-              <TbBathFilled /> Bath
+              <TbBathFilled /> {listing?.baths < 1 ? `${listing.baths} Baths` : "1 Bath"}
             </div>
             <div className="flex items-center gap-1">
               <RiParkingBoxFill /> {listing?.parking ? "Parking" : "No parking"}
@@ -117,14 +129,24 @@ function ListingDetails() {
               Contact landlord
             </button>
           )}
-          {/* {!showForm && (
- 
-          )} */}
 
           {showForm && <LandLord userRef={listing.userRef} listingTitle={listing.description} />}
         </div>
-        <div className="basis-1/2bg-gray-30">
-          <p>Text</p>
+        <div className="w-full md:basis-1/2 h-[200px] md:h-[400px]  z-10 overflow-x-hidden mt-6 md:mt-0 md:ml-2">
+          <MapContainer
+            center={[position.latitude, position.longitude]}
+            zoom={13}
+            scrollWheelZoom={false}
+            style={{ height: "100%", width: "100%" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[position.latitude, position.longitude]}>
+              <Popup>{listing?.address}</Popup>
+            </Marker>
+          </MapContainer>
         </div>
       </div>
     </section>
