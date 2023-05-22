@@ -13,27 +13,40 @@ import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
 //* react toasts notification
 import { toast } from "react-toastify";
+//* utils
+import { fetchListingsList } from "../utils/fetchListingsList";
 
 function HomePage() {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [listings, setListings] = useState([]);
+  const [listings, setListings] = useState({
+    recentOffers: {},
+    rent: {},
+    sell: {},
+  });
 
   useEffect(() => {
     async function fetchListings() {
       try {
-        setLoading(true);
+        const rent = await fetchListingsList("type", "rent");
+        const sell = await fetchListingsList("type", "sell");
+
         const listingsRef = collection(db, "listings");
         const q = query(listingsRef, orderBy("timeStamp", "desc"), limit(5));
         const querySnap = await getDocs(q);
-        const listings = [];
+        const recentOffers = [];
         querySnap.forEach((doc) => {
-          return listings.push({
+          return recentOffers.push({
             id: doc.id,
             data: doc.data(),
           });
         });
-        setListings(listings);
+
+        setListings({
+          recentOffers,
+          rent,
+          sell,
+        });
       } catch (error) {
         toast.error("Could not fetch listings! 👀", { position: "bottom-center" });
       }
@@ -41,6 +54,8 @@ function HomePage() {
     }
     fetchListings();
   }, []);
+
+  console.log(listings);
 
   const options = {
     type: "loop",
@@ -58,7 +73,7 @@ function HomePage() {
       <Splide options={options} hasTrack={false} className="relative">
         <div style={{ position: "relative" }}>
           <SplideTrack>
-            {listings.map((listing, index) => (
+            {listings.recentOffers.map((listing, index) => (
               <SplideSlide key={index}>
                 <div
                   className="relative w-full overflow-hidden h-[300px] cursor-pointer"
@@ -86,7 +101,7 @@ function HomePage() {
         >
           Show more offers
         </Link>
-        <ListingsList data={listings} />
+        <ListingsList data={listings?.recentOffers} />
         <h3 className="text-2xl font-bold xl:px-0 px-4 mb-5">Places for rent</h3>
         <Link
           className="block mb-3 text-sm px-4 xl:px-0 text-blue-600 cursor-pointer"
@@ -94,7 +109,7 @@ function HomePage() {
         >
           Show more places for rent
         </Link>
-        <ListingsList data={listings} />
+        <ListingsList data={listings?.rent} />
         <h3 className="text-2xl font-bold xl:px-0 px-4 mb-5">Places for sale</h3>
         <Link
           className="block mb-3 text-sm px-4 xl:px-0 text-blue-600 cursor-pointer"
@@ -102,7 +117,7 @@ function HomePage() {
         >
           Show more places for sale
         </Link>
-        <ListingsList data={listings} />
+        <ListingsList data={listings?.sell} />
       </div>
     </section>
   );

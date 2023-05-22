@@ -76,8 +76,8 @@ function ListingDetails() {
             <MdLocationOn /> {listing?.address}
           </address>
           <div className="flex gap-3">
-            <div className="flex items-center  justify-center text-sm md:text-base  text-white  font-bold bg-red-700 rounded py-1 w-[160px] text-center">
-              For <span className="capitalize">{listing?.type}</span>
+            <div className="flex items-center  justify-center gap-1 text-sm md:text-base  text-white  font-bold bg-red-700 rounded py-1 w-[160px] text-center">
+              For <span>{listing?.type}</span>
             </div>
             <div className="flex items-center  justify-center text-white text-sm md:text-base  font-bold bg-green-700 rounded py-1 w-[160px] text-center">
               {listing?.offer
