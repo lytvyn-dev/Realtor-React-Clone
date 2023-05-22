@@ -104,10 +104,10 @@ function ListingDetails() {
           </p>
           <div className="flex items-center gap-2 sm:gap-10 md:gap-4 lg:gap-8 text-xs sm:text-sm font-bold">
             <div className="flex items-center gap-1">
-              <MdKingBed /> {listing?.beds < 1 ? `${listing.beds} Beds` : "1 Bed"}
+              <MdKingBed /> {listing?.beds > 1 ? `${listing.beds} Beds` : "1 Bed"}
             </div>
             <div className="flex items-center gap-1">
-              <TbBathFilled /> {listing?.baths < 1 ? `${listing.baths} Baths` : "1 Bath"}
+              <TbBathFilled /> {listing?.baths > 1 ? `${listing.baths} Baths` : "1 Bath"}
             </div>
             <div className="flex items-center gap-1">
               <RiParkingBoxFill /> {listing?.parking ? "Parking" : "No parking"}

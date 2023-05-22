@@ -422,7 +422,7 @@ function Form(props) {
               type="file"
               name="images"
               id="images"
-              accept=".jpg,.png,.jpeg"
+              accept=".jpg,.png,.jpeg,.webp"
               required
               multiple
             />

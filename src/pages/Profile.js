@@ -89,7 +89,7 @@ function Profile() {
     <Fragment>
       <div>
         <h1 className="mb-7 text-center text-3xl w-full mt-6 font-bold">My Profile</h1>
-        <form className="w-full px-3 md:w-[40%] m-auto">
+        <form className="w-full px-3 md:w-[70%] lg:w-[50%] xl:w-[35%] m-auto">
           <input
             className={`py-2 px-4 bg-white border-violet-400 border border-solid w-full mb-6 ${
               changed && "bg-red-400 border-black focus:border-black"
@@ -133,7 +133,7 @@ function Profile() {
           </div>
           <Link
             to="/create-listing"
-            className="flex items-center justify-center text-lg gap-5 uppercase text-white cursor-pointer bg-blue-600 w-full px-7 py-3 hover:bg-blue-700 hover:shadow-xl transition ease-in-out duration-300 active:shadow-xl rounded"
+            className="flex items-center justify-center text-sm md:text-lg gap-5 uppercase text-white cursor-pointer bg-blue-600 w-full px-7 py-3 hover:bg-blue-700 hover:shadow-xl transition ease-in-out duration-300 active:shadow-xl rounded"
           >
             <FcHome className="pointer-events-none bg-rose-200 w-7 h-7 flex justify-center items-center rounded-full p-1" />
             sell or rent your home
