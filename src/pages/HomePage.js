@@ -30,20 +30,10 @@ function HomePage() {
       try {
         const rent = await fetchListingsList("type", "rent");
         const sell = await fetchListingsList("type", "sell");
-
-        const listingsRef = collection(db, "listings");
-        const q = query(listingsRef, orderBy("timeStamp", "desc"), limit(5));
-        const querySnap = await getDocs(q);
-        const recentOffers = [];
-        querySnap.forEach((doc) => {
-          return recentOffers.push({
-            id: doc.id,
-            data: doc.data(),
-          });
-        });
+        const offers = await fetchListingsList(null, null, true, 5);
 
         setListings({
-          recentOffers,
+          recentOffers: offers,
           rent,
           sell,
         });

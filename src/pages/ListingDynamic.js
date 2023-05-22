@@ -20,7 +20,7 @@ function ListingDynamic({ type }) {
   useEffect(() => {
     const fetchListings = async () => {
       if (listingType === "offers") {
-        const data = await fetchListingsList("offer", true);
+        const data = await fetchListingsList(null, null, true, 15);
         setListings(data);
       }
       if (listingType === "rent") {
