@@ -25,9 +25,9 @@ function HomePage() {
   useEffect(() => {
     async function fetchListings() {
       try {
-        const rent = await fetchListingsList("type", "rent", false, 8);
-        const sell = await fetchListingsList("type", "sell", false, 8);
-        const offers = await fetchListingsList(null, null, true, 8);
+        const rent = await fetchListingsList("type", "rent", false, 5);
+        const sell = await fetchListingsList("type", "sell", false, 5);
+        const offers = await fetchListingsList(null, null, true, 5);
 
         setListings({
           recentOffers: offers,
@@ -68,6 +68,17 @@ function HomePage() {
                     backgroundSize: "cover",
                   }}
                 ></div>
+                <p className="absolute top-3 left-2 px-3 py-2 bg-blue-500 text-white rounded-br-2xl shadow-black shadow-2xl opacity-80">
+                  {listing?.data.address}
+                </p>
+                <p className="absolute bottom-3 left-2 p-2 bg-red-500 rounded-tr-3xl shadow-black text-white shadow-2xl opacity-80">
+                  $
+                  {listing?.data.type === "rent"
+                    ? listing?.data.discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") ||
+                      listing?.data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    : listing?.data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  {listing?.data.type === "rent" ? "/Month" : null}
+                </p>
               </SplideSlide>
             ))}
           </SplideTrack>
