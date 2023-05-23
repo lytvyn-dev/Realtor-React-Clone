@@ -1,6 +1,7 @@
 //* pages
 import ListingDetails from "./pages/ListingDetails";
 import CreateListing from "./pages/CreateListing";
+import Offers from "./pages/Offers";
 import EditListing from "./pages/EditListing";
 import HomePage from "./pages/HomePage";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -31,6 +32,10 @@ function App() {
         {
           index: true,
           element: <HomePage />,
+        },
+        {
+          path: "offers",
+          element: <Offers />,
         },
         {
           path: "forgot-password",

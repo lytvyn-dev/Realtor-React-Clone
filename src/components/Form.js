@@ -385,7 +385,7 @@ function Form(props) {
                 id="price"
                 value={price}
                 min="50"
-                max="400000"
+                max="1500000"
                 required
               />
               {formData.type === "rent" && <p className="font-medium">$ / Month</p>}
@@ -405,7 +405,7 @@ function Form(props) {
                   id="discount"
                   value={discount}
                   min="49"
-                  max="10000"
+                  max="1000000"
                   required
                 />
                 {formData.type === "rent" && <p className="font-medium">$ / Month</p>}

@@ -25,9 +25,9 @@ function HomePage() {
   useEffect(() => {
     async function fetchListings() {
       try {
-        const rent = await fetchListingsList("type", "rent");
-        const sell = await fetchListingsList("type", "sell");
-        const offers = await fetchListingsList(null, null, true, 5);
+        const rent = await fetchListingsList("type", "rent", false, 8);
+        const sell = await fetchListingsList("type", "sell", false, 8);
+        const offers = await fetchListingsList(null, null, true, 8);
 
         setListings({
           recentOffers: offers,

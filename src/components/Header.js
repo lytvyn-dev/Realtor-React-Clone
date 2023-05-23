@@ -38,7 +38,7 @@ function Header() {
                   ? "text-black border-red-400 border-b-[3px] inline-block py-3"
                   : "text-gray-500 border-transparent border-b-[3px] inline-block py-3"
               }
-              to="/category/offers"
+              to="/offers"
             >
               Offers
             </NavLink>
