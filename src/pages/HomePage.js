@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 //* utils
 import { fetchListingsList } from "../utils/fetchListingsList";
+//* motion
+import { motion } from "framer-motion";
 
 function HomePage() {
   const [loading, setLoading] = useState(true);
@@ -54,7 +56,7 @@ function HomePage() {
   if (loading) return <Spinner />;
 
   return (
-    <section>
+    <motion.section initial={{ opacity: 0, y: "20px" }} whileInView={{ opacity: 1, y: 0 }}>
       <Splide options={options} hasTrack={false} className="relative">
         <div style={{ position: "relative" }}>
           <SplideTrack>
@@ -115,7 +117,7 @@ function HomePage() {
         </Link>
         <ListingsList data={listings?.sell} />
       </div>
-    </section>
+    </motion.section>
   );
 }
 

@@ -17,6 +17,8 @@ import "@splidejs/react-splide/css/skyblue";
 import { getAuth } from "firebase/auth";
 // *map
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+//* motion
+import { motion } from "framer-motion";
 
 function ListingDetails() {
   const { listingId } = useParams();
@@ -50,7 +52,12 @@ function ListingDetails() {
 
   if (loading) return <Spinner />;
   return (
-    <section className=" flex flex-col gap-5 lg:mb-32">
+    <motion.section
+      initial={{ opacity: 0, y: "20px" }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 }}
+      className=" flex flex-col gap-5 lg:mb-32"
+    >
       <Splide options={options} hasTrack={false} className="relative">
         <div style={{ position: "relative" }}>
           <SplideTrack>
@@ -149,7 +156,7 @@ function ListingDetails() {
           </MapContainer>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 

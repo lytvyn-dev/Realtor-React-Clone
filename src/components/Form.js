@@ -17,6 +17,8 @@ import { fetchListingById } from "../utils/fetchListingById";
 import { v4 as uuidv4 } from "uuid";
 import ButtonChecked from "./UI/btns/ButtonChecked";
 import CheckButton from "./UI/btns/CheckButton";
+//*motion
+import { motion } from "framer-motion";
 
 function Form(props) {
   const navigate = useNavigate();
@@ -117,16 +119,11 @@ function Form(props) {
         const uploadTask = uploadBytesResumable(storageRef, image);
         uploadTask.on(
           "state_changed",
-          (snapshot) => {
-            // Observe state change events such as progress, pause, and resume
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          },
+          (snapshot) => {},
           (error) => {
             reject(error);
           },
           () => {
-            // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               resolve(downloadURL);
             });
@@ -172,7 +169,12 @@ function Form(props) {
   if (loading) return <Spinner />;
 
   return (
-    <div className="py-6">
+    <motion.section
+      initial={{ opacity: 0, y: "20px" }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 }}
+      className="py-6"
+    >
       <h1 className="text-center text-3xl mb-6 font-black">
         {props.type === "edit" ? "Edit Listing" : "Create Listing"}
       </h1>
@@ -430,7 +432,7 @@ function Form(props) {
         </div>
         <SubmitButton value={props.type === "edit" ? "Edit Listing" : "Create Listing"} />
       </form>
-    </div>
+    </motion.section>
   );
 }
 

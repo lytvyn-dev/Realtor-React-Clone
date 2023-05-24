@@ -2,13 +2,19 @@ import { MdModeEditOutline } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
 //* react
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 //* react moment
 import Moment from "react-moment";
+//* motion
+import { motion } from "framer-motion";
 
-function Listing({ id, data, onDelete = undefined, onEdit = undefined }) {
+const Listing = forwardRef(({ id, data, onDelete = undefined, onEdit = undefined }, ref) => {
   return (
-    <li className="flex flex-col justify-between transition-shadow duration-300 list-none bg-white shadow-md hover:shadow-lg overflow-hidden rounded">
+    <li
+      ref={ref}
+      className="flex flex-col justify-between transition-shadow duration-300 list-none bg-white shadow-md hover:shadow-lg overflow-hidden rounded"
+    >
       <Link to={`/category/${data?.type}/${id}`} className="overflow-hidden relative">
         <img
           loading="lazy"
@@ -52,6 +58,8 @@ function Listing({ id, data, onDelete = undefined, onEdit = undefined }) {
       </div>
     </li>
   );
-}
+});
 
 export default Listing;
+
+export const MListing = motion(Listing);

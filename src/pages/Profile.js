@@ -1,4 +1,4 @@
-import { Fragment, useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import AuthContext from "../store/AuthContext";
 //* firebase auth
 import { getAuth, updateProfile } from "firebase/auth";
@@ -13,6 +13,8 @@ import { FcHome } from "react-icons/fc";
 import ListingsList from "../components/ListingsList";
 //* utils
 import { fetchListingsList } from "../utils/fetchListingsList";
+//* motion
+import { motion } from "framer-motion";
 
 function Profile() {
   const auth = getAuth();
@@ -84,9 +86,23 @@ function Profile() {
     navigate(`/edit-listing/${id}`);
   };
 
+  const variants = {
+    hidden: {
+      opacity: 0,
+      y: "20px",
+    },
+    show: {
+      opacity: 1,
+      y: "0px ",
+      transition: {
+        delay: 0.3,
+      },
+    },
+  };
+
   return (
-    <Fragment>
-      <div>
+    <motion.section initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.8 }}>
+      <motion.div variants={variants}>
         <h1 className="mb-7 text-center text-3xl w-full mt-6 font-bold">My Profile</h1>
         <form className="w-full px-3 md:w-[70%] lg:w-[50%] xl:w-[35%] m-auto">
           <input
@@ -138,12 +154,12 @@ function Profile() {
             sell or rent your home
           </Link>
         </form>
-      </div>
-      <div className="mt-10">
+      </motion.div>
+      <motion.div className="mt-10">
         <h3 className="text-center text-lg font-semibold mb-8">My Listings</h3>
         <ListingsList onDelete={onDeleteListing} onEdit={onEditListing} data={listings} />
-      </div>
-    </Fragment>
+      </motion.div>
+    </motion.section>
   );
 }
 

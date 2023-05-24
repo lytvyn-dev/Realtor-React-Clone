@@ -7,7 +7,10 @@ import { fetchListingsList } from "../utils/fetchListingsList";
 //* firestore
 import { db } from "../firebase";
 import { collection, query, orderBy, startAfter, limit, getDocs, where } from "firebase/firestore";
+//* react toasts
 import { toast } from "react-toastify";
+//* motion
+import { motion } from "framer-motion";
 
 function Offers() {
   const [listings, setListings] = useState([]);
@@ -55,8 +58,25 @@ function Offers() {
 
   if (loading) return <Spinner />;
 
+  const variants = {
+    hidden: {
+      opacity: 0,
+      y: "20px",
+    },
+    show: {
+      opacity: 1,
+      y: "0px ",
+    },
+  };
+
   return (
-    <section className="container mx-auto py-8">
+    <motion.section
+      variants={variants}
+      initial="hidden"
+      animate="show"
+      transition={{ delay: 0.3 }}
+      className="container mx-auto py-8"
+    >
       <h1 className="text-3xl text-center font-bold mb-10">Offers</h1>
       <ListingsList data={listings} />
       <div className="flex items-center justify-center">
@@ -70,7 +90,7 @@ function Offers() {
           </button>
         )}
       </div>
-    </section>
+    </motion.section>
   );
 }
 
