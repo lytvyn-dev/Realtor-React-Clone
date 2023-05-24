@@ -116,11 +116,11 @@ function ListingDetails() {
               <FaChair /> {listing?.furnished ? "Furnished" : "Not furnished"}
             </div>
           </div>
-          {auth.currentUser?.uid !== listing?.userRef && !showForm && (
+          {auth?.currentUser?.uid !== listing?.userRef && !showForm && (
             <button
               type="button"
               onClick={() => {
-                if (auth.currentUser.uid !== listing.userRef) {
+                if (auth?.currentUser?.uid !== listing.userRef) {
                   setShowForm(true);
                 }
               }}
@@ -132,7 +132,7 @@ function ListingDetails() {
 
           {showForm && <LandLord userRef={listing.userRef} listingTitle={listing.description} />}
         </div>
-        <div className="w-full md:basis-1/2 h-[200px] md:h-[400px]  z-10 overflow-x-hidden mt-6 md:mt-0 md:ml-2">
+        <div className="w-full md:basis-1/2 h-[200px] md:h-auto  z-10 overflow-x-hidden mt-6 md:mt-0 md:ml-2">
           <MapContainer
             center={[position.latitude, position.longitude]}
             zoom={13}

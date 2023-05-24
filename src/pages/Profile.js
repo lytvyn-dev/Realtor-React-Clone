@@ -23,9 +23,8 @@ function Profile() {
 
   useEffect(() => {
     const fetchListings = async () => {
-      const condition = "userRef";
-      const data = await fetchListingsList(condition, auth.currentUser.uid, true, 30);
-      setListings(data);
+      const data = await fetchListingsList(true, "userRef", auth.currentUser.uid, 30);
+      setListings(data.listings);
     };
     fetchListings();
   }, [auth.currentUser.uid]);

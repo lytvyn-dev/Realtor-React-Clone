@@ -1,6 +1,10 @@
 import Form from "../components/Form";
 function CreateListing() {
-  return <Form type="create" />;
+  return (
+    <section>
+      <Form type="create" />
+    </section>
+  );
 }
 
 export default CreateListing;

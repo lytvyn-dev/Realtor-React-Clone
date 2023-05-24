@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import AuthContext from "../store/AuthContext";
 import { useContext, useState } from "react";
+import { useAuthStatus } from "../hooks/useAuthStatus";
 //*react icons
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { GrClose } from "react-icons/gr";
@@ -9,6 +10,8 @@ function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
   const navigation = useNavigate();
+
+  useAuthStatus();
 
   return (
     <header className=" bg-white border-b-2">

@@ -6,7 +6,11 @@ import { useParams } from "react-router";
 function EditListing() {
   const { listingId } = useParams();
 
-  return <Form type={"edit"} listingId={listingId} />;
+  return (
+    <section>
+      <Form type={"edit"} listingId={listingId} />
+    </section>
+  );
 }
 
 export default EditListing;
