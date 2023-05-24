@@ -156,7 +156,9 @@ function Profile() {
         </form>
       </motion.div>
       <motion.div className="mt-10">
-        <h3 className="text-center text-lg font-semibold mb-8">My Listings</h3>
+        <motion.h3 variants={variants} className="text-center text-lg font-semibold mb-8">
+          My Listings
+        </motion.h3>
         <ListingsList onDelete={onDeleteListing} onEdit={onEditListing} data={listings} />
       </motion.div>
     </motion.section>
