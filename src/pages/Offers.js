@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import ListingsList from "../components/ListingsList";
 import Spinner from "../components/Spinner";
 //* utils
-// import { fetchListingsList } from "../utils/fetchListingsList";
+import { fetchListingsList } from "../utils/fetchListingsList";
 //* firestore
 import { db } from "../firebase";
 import { collection, query, orderBy, startAfter, limit, getDocs, where } from "firebase/firestore";
@@ -15,32 +15,15 @@ function Offers() {
   const [lastListings, setLastListings] = useState();
 
   useEffect(() => {
-    async function fetchListings() {
+    const fetchListings = async () => {
       try {
-        const listingRef = collection(db, "listings");
-        const q = query(
-          listingRef,
-          where("offer", "==", true),
-          orderBy("timeStamp", "desc"),
-          limit(4)
-        );
-        const querySnap = await getDocs(q);
-        const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+        const data = await fetchListingsList(true, "offer", true, 4);
+        const lastVisible = data.querySnapshot.docs[data.querySnapshot.docs.length - 1];
         setLastListings(lastVisible);
-        const listings = [];
-        querySnap.forEach((doc) => {
-          return listings.push({
-            id: doc.id,
-            data: doc.data(),
-          });
-        });
-        setListings(listings);
+        setListings(data.listings);
         setLoading(false);
-      } catch (error) {
-        toast.error("Could not fetch listing");
-      }
-    }
-
+      } catch (error) {}
+    };
     fetchListings();
   }, []);
 

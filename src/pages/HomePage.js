@@ -1,4 +1,4 @@
-// //* splide spider
+//* splide spider
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css/skyblue";
 //* components
@@ -25,14 +25,14 @@ function HomePage() {
   useEffect(() => {
     async function fetchListings() {
       try {
-        const rent = await fetchListingsList("type", "rent", false, 5);
-        const sell = await fetchListingsList("type", "sell", false, 5);
-        const offers = await fetchListingsList(null, null, true, 5);
+        const rent = await fetchListingsList(true, "type", "rent", 5);
+        const sell = await fetchListingsList(true, "type", "sell", 5);
+        const offers = await fetchListingsList(false, null, null, 5);
 
         setListings({
-          recentOffers: offers,
-          rent,
-          sell,
+          recentOffers: offers.listings,
+          rent: rent.listings,
+          sell: sell.listings,
         });
       } catch (error) {
         toast.error("Could not fetch listings! 👀", { position: "bottom-center" });

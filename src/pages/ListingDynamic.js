@@ -11,25 +11,24 @@ function ListingDynamic({ type }) {
   const [loading, setLoading] = useState(true);
   const [listings, setListings] = useState([]);
 
-  const title =
-    (listingType === "offers" && "Offers") ||
-    (listingType === "rent" && "Places for rent") ||
-    listingType === "sell" ||
-    "Places for sell";
+  let title;
+  if (listingType === "sell") title = "Places for sale";
+  if (listingType === "rent") title = "Places for rent";
+  if (listingType === "offers") title = "Recent offers";
 
   useEffect(() => {
     const fetchListings = async () => {
       if (listingType === "offers") {
-        const data = await fetchListingsList(null, null, true, 8);
-        setListings(data);
+        const data = await fetchListingsList(false, null, null, 8);
+        setListings(data.listings);
       }
       if (listingType === "rent") {
-        const data = await fetchListingsList("type", "rent", false, 8);
-        setListings(data);
+        const data = await fetchListingsList(true, "type", "rent", 8);
+        setListings(data.listings);
       }
       if (listingType === "sell") {
-        const data = await fetchListingsList("type", "sell", false, 8);
-        setListings(data);
+        const data = await fetchListingsList(true, "type", "sell", 8);
+        setListings(data.listings);
       }
       setLoading(false);
     };

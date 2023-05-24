@@ -1,27 +1,29 @@
 import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
-import { toast } from "react-toastify";
 import { db } from "../firebase";
+import { toast } from "react-toastify";
 
 export const fetchListingsList = async (
+  whereFunc = false,
   conditionOne = null,
   conditionTwo = null,
-  isOrder = false,
   limitNum = 5
 ) => {
   let listings = [];
   let q;
-  try {
-    if (isOrder) {
-      const data = query(collection(db, "listings"), orderBy("timeStamp", "desc"), limit(limitNum));
-      q = data;
-    }
 
-    if (!isOrder) {
+  try {
+    if (whereFunc) {
       const data = query(
         collection(db, "listings"),
         where(conditionOne, "==", conditionTwo),
+        orderBy("timeStamp", "desc"),
         limit(limitNum)
       );
+      q = data;
+    }
+
+    if (!whereFunc) {
+      const data = query(collection(db, "listings"), orderBy("timeStamp", "desc"), limit(limitNum));
       q = data;
     }
 
@@ -32,8 +34,9 @@ export const fetchListingsList = async (
         data: doc.data(),
       });
     });
-    return listings;
+    return { listings, querySnapshot };
   } catch (error) {
+    console.log(error);
     toast.error("Could not fetch you listings! 👀", { position: "bottom-center" });
   }
 };
