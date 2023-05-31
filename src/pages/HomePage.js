@@ -76,9 +76,9 @@ function HomePage() {
                 <p className="absolute bottom-3 left-2 p-2 bg-red-500 rounded-tr-3xl shadow-black text-white shadow-2xl opacity-80">
                   $
                   {listing?.data.type === "rent"
-                    ? listing?.data.discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") ||
-                      listing?.data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    : listing?.data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    ? listing?.data.discount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") ||
+                      listing?.data.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    : listing?.data.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   {listing?.data.type === "rent" ? "/Month" : null}
                 </p>
               </SplideSlide>
